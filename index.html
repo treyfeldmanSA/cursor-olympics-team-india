@@ -9,18 +9,18 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0f0f12;
-            --surface: #1a1a1f;
-            --surface-hover: #222228;
-            --border: #2d2d35;
-            --text: #f0f0f2;
-            --text-muted: #8a8a94;
-            --accent: #ee334e;
-            --accent-hover: #ff4d6a;
-            --gold: #fcb131;
-            --green: #00a651;
+            --bg: #5a5a5f;
+            --surface: #ffffff;
+            --surface-hover: #f8f8f8;
+            --border: #e0e0e0;
+            --text: #1a1a1a;
+            --text-muted: #6b6b6b;
+            --accent: #e85c25;
+            --accent-hover: #d9522e;
+            --orange: #e85c25;
+            --green: #2e7d32;
             --radius: 12px;
-            --shadow: 0 4px 24px rgba(0,0,0,0.35);
+            --shadow: 0 4px 24px rgba(0,0,0,0.08);
         }
 
         * {
@@ -33,8 +33,7 @@
             background: var(--bg);
             color: var(--text);
             font-family: 'DM Sans', system-ui, sans-serif;
-            border-top: 6px solid;
-            border-image: linear-gradient(to right, #0081C8 20%, #FCB131 20% 40%, #000 40% 60%, #00A651 60% 80%, #EE334E 80%) 1;
+            border-top: 6px solid var(--orange);
         }
 
         .header {
@@ -44,7 +43,7 @@
         .header h1 {
             font-size: 2rem;
             font-weight: 700;
-            color: var(--text);
+            color: var(--orange);
             margin: 0;
             letter-spacing: -0.02em;
         }
@@ -80,7 +79,7 @@
             margin: 0 0 1rem;
             font-size: 0.9rem;
             font-weight: 600;
-            color: var(--text-muted);
+            color: var(--orange);
             text-transform: uppercase;
             letter-spacing: 0.06em;
         }
@@ -102,7 +101,7 @@
             justify-content: center;
             font-size: 2.5rem;
             font-weight: 700;
-            color: var(--gold);
+            color: var(--orange);
             border: 2px solid var(--border);
         }
         .dice-result.rolling {
@@ -121,12 +120,13 @@
             font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            background: var(--accent);
-            color: #fff;
+            background: var(--orange);
+            color: #ffffff;
             transition: background 0.2s, transform 0.1s;
         }
         .btn:hover {
             background: var(--accent-hover);
+            color: #ffffff;
         }
         .btn:active {
             transform: scale(0.98);
@@ -177,8 +177,8 @@
             background: rgba(238, 51, 78, 0.1);
         }
         .emoji-btn.active {
-            border-color: var(--gold);
-            background: rgba(252, 177, 49, 0.15);
+            border-color: var(--orange);
+            background: rgba(232, 92, 37, 0.12);
         }
         .emoji-btn:active {
             transform: scale(0.95);
@@ -223,7 +223,7 @@
             font-size: 2.5rem;
             font-weight: 700;
             text-align: center;
-            color: var(--gold);
+            color: var(--orange);
             margin-bottom: 1rem;
             font-variant-numeric: tabular-nums;
         }
@@ -267,7 +267,7 @@
             color: var(--text-muted);
         }
         .char-count.at-limit {
-            color: var(--accent);
+            color: var(--orange);
         }
 
         /* Copy to clipboard */
@@ -319,7 +319,7 @@
             margin-top: 0.35rem;
         }
         .kpi-change.positive { color: var(--green); }
-        .kpi-change.negative { color: var(--accent); }
+        .kpi-change.negative { color: var(--orange); }
 
         /* File picker */
         .file-picker-wrap {
@@ -355,7 +355,7 @@
         }
         .star-rating .star:hover,
         .star-rating .star.filled {
-            color: var(--gold);
+            color: var(--orange);
         }
         .star-rating .star:hover {
             transform: scale(1.1);
@@ -572,7 +572,7 @@
             function random(min, max) {
                 return min + Math.random() * (max - min);
             }
-            var colors = ['#ee334e', '#fcb131', '#00a651', '#0081c8', '#fff'];
+            var colors = ['#e85c25', '#ff8c42', '#ffffff', '#f5f5f5', '#1a1a1a'];
 
             function createConfetti() {
                 particles = [];
