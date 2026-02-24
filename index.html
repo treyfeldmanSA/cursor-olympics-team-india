@@ -3,35 +3,781 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team India 🇮🇳</title>
+    <title>Team India — Widgets 🇮🇳</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
     <style>
-        body {
-            /* Centers the text vertically and horizontally */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #fafafa;
-            font-family: system-ui, -apple-system, sans-serif;
-            
-            /* Minimal Olympic rings color bar at the top */
-            border-top: 8px solid;
-            border-image: linear-gradient(to right, #0081C8 20%, #FCB131 20% 40%, #000000 40% 60%, #00A651 60% 80%, #EE334E 80%) 1;
+        :root {
+            --bg: #0f0f12;
+            --surface: #1a1a1f;
+            --surface-hover: #222228;
+            --border: #2d2d35;
+            --text: #f0f0f2;
+            --text-muted: #8a8a94;
+            --accent: #ee334e;
+            --accent-hover: #ff4d6a;
+            --gold: #fcb131;
+            --green: #00a651;
+            --radius: 12px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.35);
         }
 
-        h1 {
-            font-size: 3.5rem;
-            color: #002868; /* Classic Team USA Navy */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
             margin: 0;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', system-ui, sans-serif;
+            border-top: 6px solid;
+            border-image: linear-gradient(to right, #0081C8 20%, #FCB131 20% 40%, #000 40% 60%, #00A651 60% 80%, #EE334E 80%) 1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        .header h1 {
+            font-size: 2rem;
             font-weight: 700;
+            color: var(--text);
+            margin: 0;
             letter-spacing: -0.02em;
+        }
+        .header p {
+            color: var(--text-muted);
+            margin: 0.5rem 0 0;
+            font-size: 0.95rem;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 1.5rem 3rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            box-shadow: var(--shadow);
+        }
+        .card.full-width {
+            grid-column: 1 / -1;
+        }
+        .card h3 {
+            margin: 0 0 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* Dice roller */
+        .dice-area {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .dice-result {
+            width: 64px;
+            height: 64px;
+            background: var(--surface-hover);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gold);
+            border: 2px solid var(--border);
+        }
+        .dice-result.rolling {
+            animation: diceShake 0.3s ease-in-out 3;
+        }
+        @keyframes diceShake {
+            0%, 100% { transform: rotate(0); }
+            25% { transform: rotate(-8deg); }
+            75% { transform: rotate(8deg); }
+        }
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: var(--accent);
+            color: #fff;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn:hover {
+            background: var(--accent-hover);
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Quote */
+        .quote-box {
+            background: var(--surface-hover);
+            border-radius: 8px;
+            padding: 1rem;
+            min-height: 80px;
+            margin-bottom: 1rem;
+        }
+        .quote-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--text);
+            margin: 0;
+            font-style: italic;
+        }
+        .quote-author {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Emoji reaction bar */
+        .emoji-bar {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .emoji-btn {
+            width: 48px;
+            height: 48px;
+            border: 2px solid var(--border);
+            background: var(--surface-hover);
+            border-radius: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.2s, transform 0.1s, background 0.2s;
+        }
+        .emoji-btn:hover {
+            border-color: var(--accent);
+            background: rgba(238, 51, 78, 0.1);
+        }
+        .emoji-btn.active {
+            border-color: var(--gold);
+            background: rgba(252, 177, 49, 0.15);
+        }
+        .emoji-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Confetti */
+        .confetti-wrap {
+            position: relative;
+        }
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Countdown */
+        .countdown-inputs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .countdown-inputs input {
+            width: 60px;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface-hover);
+            color: var(--text);
+            font-size: 1rem;
+            text-align: center;
+        }
+        .countdown-inputs input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .countdown-display {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-variant-numeric: tabular-nums;
+        }
+        .countdown-display.finished {
+            color: var(--green);
+        }
+        .countdown-btns {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .btn-secondary {
+            background: var(--surface-hover);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        /* Character counter */
+        .char-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface-hover);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: vertical;
+        }
+        .char-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .char-count {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .char-count.at-limit {
+            color: var(--accent);
+        }
+
+        /* Copy to clipboard */
+        .copy-area {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .copy-area input {
+            flex: 1;
+            min-width: 120px;
+            padding: 0.6rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface-hover);
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+        .copy-area input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* KPI cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+        .kpi-card {
+            background: var(--surface-hover);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid var(--border);
+        }
+        .kpi-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 0;
+        }
+        .kpi-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        .kpi-change {
+            font-size: 0.75rem;
+            margin-top: 0.35rem;
+        }
+        .kpi-change.positive { color: var(--green); }
+        .kpi-change.negative { color: var(--accent); }
+
+        /* File picker */
+        .file-picker-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .file-picker-wrap input[type="file"] {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .file-name {
+            font-size: 0.9rem;
+            color: var(--text);
+            word-break: break-all;
+        }
+        .file-name.empty {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Star rating */
+        .star-rating {
+            display: flex;
+            gap: 0.25rem;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        .star-rating .star {
+            color: var(--border);
+            transition: color 0.15s, transform 0.1s;
+        }
+        .star-rating .star:hover,
+        .star-rating .star.filled {
+            color: var(--gold);
+        }
+        .star-rating .star:hover {
+            transform: scale(1.1);
+        }
+        .star-rating .star:active {
+            transform: scale(0.95);
+        }
+        .star-value {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
         }
     </style>
 </head>
 <body>
 
-    <h1>Go team India! 🇮🇳</h1>
+    <header class="header">
+        <h1>Go Team India! 🇮🇳</h1>
+        <p>Widgets — Dice, Quotes, Reactions, Timers & more</p>
+    </header>
+
+    <main class="container">
+        <div class="grid">
+
+            <!-- 1. Dice roller -->
+            <section class="card">
+                <h3>Dice roller</h3>
+                <div class="dice-area">
+                    <div class="dice-result" id="diceResult" aria-live="polite">—</div>
+                    <button type="button" class="btn" id="diceRoll">Roll</button>
+                </div>
+            </section>
+
+            <!-- 2. Random quote generator -->
+            <section class="card">
+                <h3>Random quote</h3>
+                <div class="quote-box">
+                    <p class="quote-text" id="quoteText">Click below for a random quote.</p>
+                    <span class="quote-author" id="quoteAuthor"></span>
+                </div>
+                <button type="button" class="btn" id="quoteBtn">New quote</button>
+            </section>
+
+            <!-- 3. Emoji reaction bar -->
+            <section class="card">
+                <h3>Emoji reaction bar</h3>
+                <div class="emoji-bar" id="emojiBar" role="group" aria-label="Reactions">
+                    <button type="button" class="emoji-btn" data-emoji="👍" aria-label="Like">👍</button>
+                    <button type="button" class="emoji-btn" data-emoji="❤️" aria-label="Love">❤️</button>
+                    <button type="button" class="emoji-btn" data-emoji="😂" aria-label="Funny">😂</button>
+                    <button type="button" class="emoji-btn" data-emoji="😮" aria-label="Wow">😮</button>
+                    <button type="button" class="emoji-btn" data-emoji="😢" aria-label="Sad">😢</button>
+                    <button type="button" class="emoji-btn" data-emoji="🔥" aria-label="Fire">🔥</button>
+                </div>
+            </section>
+
+            <!-- 4. Confetti button -->
+            <section class="card confetti-wrap">
+                <h3>Confetti</h3>
+                <button type="button" class="btn" id="confettiBtn">🎉 Confetti!</button>
+                <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+            </section>
+
+            <!-- 5. Countdown timer -->
+            <section class="card full-width">
+                <h3>Countdown timer</h3>
+                <div class="countdown-inputs">
+                    <input type="number" id="countdownM" min="0" max="59" value="1" aria-label="Minutes">
+                    <span>m</span>
+                    <input type="number" id="countdownS" min="0" max="59" value="0" aria-label="Seconds">
+                    <span>s</span>
+                </div>
+                <div class="countdown-display" id="countdownDisplay" aria-live="polite">1:00</div>
+                <div class="countdown-btns">
+                    <button type="button" class="btn" id="countdownStart">Start</button>
+                    <button type="button" class="btn btn-secondary" id="countdownPause">Pause</button>
+                    <button type="button" class="btn btn-secondary" id="countdownReset">Reset</button>
+                </div>
+            </section>
+
+            <!-- 6. Character counter -->
+            <section class="card">
+                <h3>Character counter</h3>
+                <textarea class="char-textarea" id="charInput" placeholder="Type here…" maxlength="500" rows="4"></textarea>
+                <div class="char-count" id="charCount">0 / 500</div>
+            </section>
+
+            <!-- 7. Copy to clipboard -->
+            <section class="card">
+                <h3>Copy to clipboard</h3>
+                <div class="copy-area">
+                    <input type="text" id="copyInput" value="Team India 🇮🇳 — Copy this text!" aria-label="Text to copy">
+                    <button type="button" class="btn" id="copyBtn">Copy</button>
+                </div>
+                <span id="copyFeedback" aria-live="polite"></span>
+            </section>
+
+            <!-- 8. KPI stat cards -->
+            <section class="card full-width">
+                <h3>KPI stat cards</h3>
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <p class="kpi-value">₹42.5L</p>
+                        <span class="kpi-label">Revenue</span>
+                        <span class="kpi-change positive">↑ 12%</span>
+                    </div>
+                    <div class="kpi-card">
+                        <p class="kpi-value">1,240</p>
+                        <span class="kpi-label">Users</span>
+                        <span class="kpi-change positive">↑ 8%</span>
+                    </div>
+                    <div class="kpi-card">
+                        <p class="kpi-value">94%</p>
+                        <span class="kpi-label">Satisfaction</span>
+                        <span class="kpi-change positive">↑ 2%</span>
+                    </div>
+                    <div class="kpi-card">
+                        <p class="kpi-value">328</p>
+                        <span class="kpi-label">Orders</span>
+                        <span class="kpi-change negative">↓ 3%</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9. File picker -->
+            <section class="card">
+                <h3>File picker</h3>
+                <div class="file-picker-wrap">
+                    <input type="file" id="fileInput" aria-label="Choose file">
+                    <span class="file-name empty" id="fileName">No file chosen</span>
+                </div>
+            </section>
+
+            <!-- 10. Star rating -->
+            <section class="card">
+                <h3>Star rating</h3>
+                <div class="star-rating" id="starRating" role="group" aria-label="Rate 1 to 5 stars">
+                    <span class="star" data-value="1" aria-label="1 star">★</span>
+                    <span class="star" data-value="2" aria-label="2 stars">★</span>
+                    <span class="star" data-value="3" aria-label="3 stars">★</span>
+                    <span class="star" data-value="4" aria-label="4 stars">★</span>
+                    <span class="star" data-value="5" aria-label="5 stars">★</span>
+                </div>
+                <div class="star-value" id="starValue">0 / 5</div>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        (function () {
+            'use strict';
+
+            // —— Dice roller ——
+            var diceResult = document.getElementById('diceResult');
+            var diceRoll = document.getElementById('diceRoll');
+            function rollDice() {
+                diceResult.classList.add('rolling');
+                diceResult.textContent = '…';
+                setTimeout(function () {
+                    var n = Math.floor(Math.random() * 6) + 1;
+                    diceResult.textContent = n;
+                    diceResult.classList.remove('rolling');
+                }, 400);
+            }
+            diceRoll.addEventListener('click', rollDice);
+
+            // —— Random quote (local array) ——
+            var quotes = [
+                { text: 'The best way to find yourself is to lose yourself in the service of others.', author: 'Mahatma Gandhi' },
+                { text: 'Excellence is a continuous process and not an accident.', author: 'A. P. J. Abdul Kalam' },
+                { text: 'You have to dream before your dreams can come true.', author: 'A. P. J. Abdul Kalam' },
+                { text: 'If you want to shine like a sun, first burn like a sun.', author: 'A. P. J. Abdul Kalam' },
+                { text: 'Take up one idea. Make that one idea your life.', author: 'Swami Vivekananda' },
+                { text: 'Arise, awake, and stop not until the goal is reached.', author: 'Swami Vivekananda' },
+                { text: 'We are what our thoughts have made us.', author: 'Swami Vivekananda' },
+                { text: 'In a gentle way, you can shake the world.', author: 'Mahatma Gandhi' },
+                { text: 'Strength does not come from physical capacity. It comes from an indomitable will.', author: 'Mahatma Gandhi' },
+                { text: 'Gold medals aren\'t really made of gold. They\'re made of sweat, determination, and a hard-to-find alloy called guts.', author: 'Dan Gable' }
+            ];
+            var quoteText = document.getElementById('quoteText');
+            var quoteAuthor = document.getElementById('quoteAuthor');
+            var quoteBtn = document.getElementById('quoteBtn');
+            function showRandomQuote() {
+                var q = quotes[Math.floor(Math.random() * quotes.length)];
+                quoteText.textContent = '"' + q.text + '"';
+                quoteAuthor.textContent = '— ' + q.author;
+            }
+            quoteBtn.addEventListener('click', showRandomQuote);
+
+            // —— Emoji reaction bar ——
+            var emojiBar = document.getElementById('emojiBar');
+            emojiBar.addEventListener('click', function (e) {
+                var btn = e.target.closest('.emoji-btn');
+                if (!btn) return;
+                emojiBar.querySelectorAll('.emoji-btn').forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+            });
+
+            // —— Confetti (canvas) ——
+            var confettiBtn = document.getElementById('confettiBtn');
+            var canvas = document.getElementById('confetti-canvas');
+            var ctx = canvas.getContext('2d');
+            var particles = [];
+            var animationId = null;
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            function random(min, max) {
+                return min + Math.random() * (max - min);
+            }
+            var colors = ['#ee334e', '#fcb131', '#00a651', '#0081c8', '#fff'];
+
+            function createConfetti() {
+                particles = [];
+                for (var i = 0; i < 120; i++) {
+                    particles.push({
+                        x: canvas.width / 2,
+                        y: canvas.height / 2,
+                        vx: random(-8, 8),
+                        vy: random(-12, -4),
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        size: random(4, 10),
+                        rotation: random(0, 360),
+                        rotationSpeed: random(-0.2, 0.2)
+                    });
+                }
+            }
+
+            function drawConfetti() {
+                if (!ctx || !canvas.width) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                var anyLeft = false;
+                particles.forEach(function (p) {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.25;
+                    p.rotation += p.rotationSpeed;
+                    if (p.y < canvas.height + 20) anyLeft = true;
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.rotation * Math.PI) / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctx.restore();
+                });
+                if (anyLeft) {
+                    animationId = requestAnimationFrame(drawConfetti);
+                } else {
+                    canvas.style.display = 'none';
+                }
+            }
+
+            confettiBtn.addEventListener('click', function () {
+                if (animationId) cancelAnimationFrame(animationId);
+                canvas.style.display = 'block';
+                createConfetti();
+                drawConfetti();
+            });
+
+            // —— Countdown timer ——
+            var countdownM = document.getElementById('countdownM');
+            var countdownS = document.getElementById('countdownS');
+            var countdownDisplay = document.getElementById('countdownDisplay');
+            var countdownStart = document.getElementById('countdownStart');
+            var countdownPause = document.getElementById('countdownPause');
+            var countdownReset = document.getElementById('countdownReset');
+            var countdownInterval = null;
+            var totalSeconds = 60;
+            var remaining = 60;
+
+            function pad(n) { return n < 10 ? '0' + n : String(n); }
+            function formatTime(s) {
+                var m = Math.floor(s / 60);
+                var s_ = s % 60;
+                return pad(m) + ':' + pad(s_);
+            }
+
+            function updateCountdownDisplay() {
+                countdownDisplay.textContent = formatTime(remaining);
+                countdownDisplay.classList.toggle('finished', remaining === 0);
+            }
+
+            function startCountdown() {
+                if (countdownInterval) return;
+                if (remaining <= 0) {
+                    var m = parseInt(countdownM.value, 10) || 0;
+                    var s = parseInt(countdownS.value, 10) || 0;
+                    totalSeconds = remaining = m * 60 + s;
+                }
+                updateCountdownDisplay();
+                countdownInterval = setInterval(function () {
+                    if (remaining <= 0) {
+                        clearInterval(countdownInterval);
+                        countdownInterval = null;
+                        return;
+                    }
+                    remaining--;
+                    updateCountdownDisplay();
+                }, 1000);
+            }
+
+            function pauseCountdown() {
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
+                }
+            }
+
+            function resetCountdown() {
+                pauseCountdown();
+                var m = parseInt(countdownM.value, 10) || 0;
+                var s = parseInt(countdownS.value, 10) || 0;
+                totalSeconds = remaining = m * 60 + s;
+                updateCountdownDisplay();
+            }
+
+            countdownStart.addEventListener('click', startCountdown);
+            countdownPause.addEventListener('click', pauseCountdown);
+            countdownReset.addEventListener('click', resetCountdown);
+            countdownM.addEventListener('change', function () {
+                if (!countdownInterval) {
+                    totalSeconds = remaining = (parseInt(countdownM.value, 10) || 0) * 60 + (parseInt(countdownS.value, 10) || 0);
+                    updateCountdownDisplay();
+                }
+            });
+            countdownS.addEventListener('change', function () {
+                if (!countdownInterval) {
+                    totalSeconds = remaining = (parseInt(countdownM.value, 10) || 0) * 60 + (parseInt(countdownS.value, 10) || 0);
+                    updateCountdownDisplay();
+                }
+            });
+            updateCountdownDisplay();
+
+            // —— Character counter ——
+            var charInput = document.getElementById('charInput');
+            var charCount = document.getElementById('charCount');
+            var maxLen = 500;
+            function updateCharCount() {
+                var len = charInput.value.length;
+                charCount.textContent = len + ' / ' + maxLen;
+                charCount.classList.toggle('at-limit', len >= maxLen);
+            }
+            charInput.addEventListener('input', updateCharCount);
+            updateCharCount();
+
+            // —— Copy to clipboard ——
+            var copyInput = document.getElementById('copyInput');
+            var copyBtn = document.getElementById('copyBtn');
+            var copyFeedback = document.getElementById('copyFeedback');
+            copyBtn.addEventListener('click', function () {
+                copyInput.select();
+                copyInput.setSelectionRange(0, 99999);
+                try {
+                    navigator.clipboard.writeText(copyInput.value).then(function () {
+                        copyFeedback.textContent = 'Copied!';
+                        copyFeedback.style.color = 'var(--green)';
+                        setTimeout(function () { copyFeedback.textContent = ''; }, 2000);
+                    }).catch(function () {
+                        copyFeedback.textContent = 'Copy failed';
+                        copyFeedback.style.color = 'var(--accent)';
+                    });
+                } catch (err) {
+                    copyFeedback.textContent = 'Copy not supported';
+                    copyFeedback.style.color = 'var(--accent)';
+                }
+            });
+
+            // —— File picker (display name only) ——
+            var fileInput = document.getElementById('fileInput');
+            var fileName = document.getElementById('fileName');
+            fileInput.addEventListener('change', function () {
+                var file = fileInput.files && fileInput.files[0];
+                if (file) {
+                    fileName.textContent = file.name;
+                    fileName.classList.remove('empty');
+                } else {
+                    fileName.textContent = 'No file chosen';
+                    fileName.classList.add('empty');
+                }
+            });
+
+            // —— Star rating (no persistence) ——
+            var starRating = document.getElementById('starRating');
+            var starValue = document.getElementById('starValue');
+            var currentRating = 0;
+            var stars = starRating.querySelectorAll('.star');
+
+            function setStarsUpTo(n) {
+                stars.forEach(function (star, i) {
+                    star.classList.toggle('filled', i < n);
+                });
+                currentRating = n;
+                starValue.textContent = n + ' / 5';
+            }
+
+            starRating.addEventListener('click', function (e) {
+                var star = e.target.closest('.star');
+                if (!star) return;
+                var v = parseInt(star.getAttribute('data-value'), 10);
+                setStarsUpTo(v);
+            });
+
+            starRating.addEventListener('mouseleave', function () {
+                setStarsUpTo(currentRating);
+            });
+
+            starRating.addEventListener('mouseover', function (e) {
+                var star = e.target.closest('.star');
+                if (!star) return;
+                var v = parseInt(star.getAttribute('data-value'), 10);
+                stars.forEach(function (s, i) {
+                    s.classList.toggle('filled', i < v);
+                });
+            });
+        })();
+    </script>
 
 </body>
 </html>
